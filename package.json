@@ -49,14 +49,13 @@
     "@solidjs/meta": "^0.29.1",
     "@solidjs/router": "^0.8.3",
     "intl-messageformat": "10.5.4",
-    "nanoid": "^5.0.2",
+    "partysocket": "0.0.12",
     "solid-js": "^1.8.5",
     "solid-start": "^0.3.8",
     "solid-styled": "^0.9.2",
     "solid-transition-group": "^0.2.3",
     "undici": "5.27.0",
-    "zod": "^3.22.4",
-    "partysocket": "0.0.12"
+    "zod": "^3.22.4"
   },
   "engines": {
     "node": ">=16"

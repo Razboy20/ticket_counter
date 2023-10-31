@@ -17,9 +17,7 @@ export default defineConfig(() => {
       }),
       solid({
         ssr: true,
-        adapter: cloudflare({
-          compatibilityFlags: ["nodejs_compat"],
-        }),
+        adapter: cloudflare({}),
       }),
       Icons({ compiler: "solid" }),
       UnoCSS(),

@@ -1,4 +1,3 @@
-import { nanoid } from "nanoid";
 import PartySocket from "partysocket";
 import { Show, createSignal, onMount } from "solid-js";
 import type { RouteDataArgs } from "solid-start";
@@ -7,6 +6,7 @@ import { createServerData$, useRequest } from "solid-start/server";
 import { FastSpinner } from "~/components/Spinner";
 import { clientEnv } from "~/env/client";
 import { Message } from "~/env/party";
+import { nanoid } from "~/util/nanoid";
 import { showToast } from "~/util/toaster";
 import TicketIcon from "~icons/heroicons/ticket";
 
