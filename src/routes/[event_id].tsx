@@ -45,7 +45,7 @@ export default function TicketPage() {
 
   onMount(() => {
     const partySocket = new PartySocket({
-      host: import.meta.env.DEV ? "localhost:1999" : clientEnv.PARTY_SOCKET,
+      host: import.meta.env.DEV ? "localhost:1999" : clientEnv.VITE_PARTY_SOCKET,
       room: params.event_id,
       query: {
         user_token: getUserToken(),

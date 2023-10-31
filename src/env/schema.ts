@@ -6,5 +6,5 @@ export const serverScheme = z.object({
 
 export const clientScheme = z.object({
   MODE: z.enum(["development", "production", "test"]).default("development"),
-  PARTY_SOCKET: z.string().default("localhost:1999"),
+  VITE_PARTY_SOCKET: z.string(),
 });
