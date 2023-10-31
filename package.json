@@ -1,0 +1,72 @@
+{
+  "name": "ticket-counter",
+  "scripts": {
+    "dev": "solid-start dev --port 3000",
+    "start": "solid-start start --port 3000",
+    "build": "solid-start build",
+    "lint": "eslint --fix \"**/*.{ts,tsx,js,jsx}\" -c .eslintrc.cjs"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@iconify-json/heroicons": "^1.1.13",
+    "@types/node": "^20.8.9",
+    "@typescript-eslint/eslint-plugin": "^6.9.1",
+    "@typescript-eslint/parser": "^6.9.1",
+    "@unocss/eslint-config": "^0.57.1",
+    "@unocss/preset-uno": "^0.57.1",
+    "@unocss/preset-web-fonts": "^0.57.1",
+    "@unocss/reset": "^0.57.1",
+    "@unocss/transformer-directives": "^0.57.1",
+    "@unocss/transformer-variant-group": "^0.57.1",
+    "autoprefixer": "^10.4.16",
+    "clsx": "^2.0.0",
+    "eslint": "^8.52.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-solid": "^0.13.0",
+    "partykit": "0.0.32",
+    "postcss": "^8.4.31",
+    "prettier": "^3.0.3",
+    "sass": "^1.69.5",
+    "solid-devtools": "^0.27.7",
+    "solid-start-cloudflare-pages": "^0.3.8",
+    "tailwindcss": "^3.3.5",
+    "typescript": "^5.2.2",
+    "unocss": "^0.57.1",
+    "unocss-preset-primitives": "0.0.1-beta.13",
+    "unocss-preset-radix": "^2.5.5",
+    "unplugin-icons": "^0.17.1",
+    "vite": "^4.5.0",
+    "vite-plugin-solid-styled": "^0.9.2",
+    "wrangler": "^3.15.0"
+  },
+  "dependencies": {
+    "@kobalte/core": "^0.11.2",
+    "@solid-primitives/event-listener": "^2.3.0",
+    "@solid-primitives/timer": "^1.3.7",
+    "@solidjs/meta": "^0.29.1",
+    "@solidjs/router": "^0.8.3",
+    "intl-messageformat": "10.5.4",
+    "nanoid": "^5.0.2",
+    "solid-js": "^1.8.5",
+    "solid-start": "^0.3.8",
+    "solid-styled": "^0.9.2",
+    "solid-transition-group": "^0.2.3",
+    "undici": "5.27.0",
+    "zod": "^3.22.4",
+    "partysocket": "0.0.12"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "peerDependenciesMeta": {
+    "solid-styled": {
+      "version": ">=0.9.0"
+    }
+  },
+  "volta": {
+    "node": "18.18.2"
+  }
+}
