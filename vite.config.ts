@@ -9,12 +9,14 @@ import solidStyled from "vite-plugin-solid-styled";
 export default defineConfig(() => {
   return {
     plugins: [
-      devtools({
-        autoname: true,
-        locator: {
-          targetIDE: "vscode",
-        },
-      }),
+      process.env.NODE_ENV == "development"
+        ? devtools({
+            autoname: true,
+            locator: {
+              targetIDE: "vscode",
+            },
+          })
+        : undefined,
       solid({
         ssr: true,
         adapter: cloudflare({}),
@@ -28,36 +30,12 @@ export default defineConfig(() => {
           exclude: "node_modules/**/*.{ts,js,tsx,jsx}",
         },
       }),
-      {
-        name: "cross-origin-isolation",
-        configureServer: (server) => {
-          server.middlewares.use((_, response, next) => {
-            response.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-            response.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
-            next();
-          });
-        },
-        configurePreviewServer: (server) => {
-          server.middlewares.use((_, response, next) => {
-            response.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-            response.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
-            next();
-          });
-        },
-      },
     ],
     ssr: {
-      external: ["@prisma/client"],
-      noExternal: ["@kobalte/core", "crypto", "@internationalized/message"],
+      noExternal: ["@kobalte/core", "@internationalized/message"],
     },
     optimizeDeps: {
       include: ["solid-devtools/setup"],
-    },
-    server: {
-      headers: {
-        "Cross-Origin-Opener-Policy": "same-origin",
-        "Cross-Origin-Embedder-Policy": "require-corp",
-      },
     },
   };
 });
