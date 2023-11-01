@@ -8,6 +8,7 @@ import { Body, ErrorBoundary, FileRoutes, Head, Html, Link, Meta, Routes, Script
 import { ThemeControllerButton, ThemeProvider } from "./components/ThemeController";
 
 import logo from "~/assets/img/logo.svg";
+import { QRCodeButton } from "./components/QRCodeButton";
 
 export default function Root() {
   return (
@@ -28,7 +29,8 @@ export default function Root() {
           <Body class="h-full w-full bg-neutral-50 transition-colors duration-100 dark:bg-neutral-900">
             <Suspense>
               <ErrorBoundary>
-                <div class="absolute right-0 top-0 p-4">
+                <div class="absolute right-0 top-0 p-4 flex items-center gap-2">
+                  <QRCodeButton link={location.href}></QRCodeButton>
                   <ThemeControllerButton />
                 </div>
                 <Routes>
