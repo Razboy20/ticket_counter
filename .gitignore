@@ -236,6 +236,7 @@ packages/nupack/build/
 workers/
 .solid
 *.sqlite
+*.db
 
 .idea/
 .vercel/

@@ -1,4 +1,5 @@
 {
+  "extends": "./.vinxi/types/tsconfig.json", // add nitro types
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
@@ -11,6 +12,9 @@
     "strict": true,
     "noEmit": true,
     "isolatedModules": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "baseUrl": "./",
     "types": [
       "vinxi/types/client",
       "node",
@@ -22,12 +26,14 @@
       ]
     },
   },
+  "include": [
+    "./src/**/*",
+    "./party/**/*",
+    "./app.config.ts",
+    "unocss.config.ts",
+    "drizzle.config.ts"
+  ],
   "exclude": [
-    "node_modules",
-    ".vinxi",
-    ".partykit",
-    ".wrangler",
-    ".output",
-    "dist"
+    "node_modules"
   ]
 }

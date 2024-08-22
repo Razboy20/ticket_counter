@@ -1,22 +1,34 @@
 import { action, cache, createAsync, revalidate, useAction, type RouteDefinition } from "@solidjs/router";
-import { createSignal, Show, type VoidComponent } from "solid-js";
+import { createSignal, Show, Suspense, type VoidComponent } from "solid-js";
 import { getRequestEvent } from "solid-js/web";
+import { deleteCookie } from "vinxi/http";
 import { googleRedirectUrl } from "~/lib/auth";
 import { FastSpinner } from "./Spinner";
 
-const redirectAction = action(async () => {
+// eslint-disable-next-line @typescript-eslint/require-await
+const redirectAction$ = action(async () => {
   "use server";
   return googleRedirectUrl(getRequestEvent()!.nativeEvent);
 });
 
-const logoutAction = action(async () => {
+const logoutAction$ = action(async () => {
   "use server";
+  console.log("Logging user out...");
   const event = getRequestEvent()!;
   const lucia = event.locals.lucia;
-  const user = event.nativeEvent.context.user;
+  const session = event.nativeEvent.context.session;
 
-  if (user) {
-    await lucia.invalidateSession(user.id);
+  if (session) {
+    await lucia.invalidateSession(session.id);
+    event.nativeEvent.context.session = null;
+    event.nativeEvent.context.user = null;
+
+    // regenerate the fingerprint
+    deleteCookie(event.nativeEvent, "session_id");
+    void revalidate("sessionId");
+    void revalidate("authSessionid");
+
+    console.log("Session invalidated.");
 
     void revalidate("auth-data");
     return true;
@@ -55,7 +67,7 @@ const GoogleLogo = () => (
 
 export const GLoginButton: VoidComponent = (props) => {
   const [loading, setLoading] = createSignal(false);
-  const redirectGoogle = useAction(redirectAction);
+  const redirectGoogle = useAction(redirectAction$);
 
   return (
     // no-js signin
@@ -87,7 +99,7 @@ export const GLoginButton: VoidComponent = (props) => {
 
 export const LogoutButton: VoidComponent = () => {
   return (
-    <form action={logoutAction} method="post">
+    <form action={logoutAction$} method="post">
       <button
         class="bg-neutral-200 bg-opacity-0 text-neutral-500 duration-50 dark:bg-neutral-700 dark:bg-opacity-0 hover:bg-opacity-50 hover:text-sky-500 hover:underline btn hover:dark:text-sky-400"
         type="submit"
@@ -99,8 +111,9 @@ export const LogoutButton: VoidComponent = () => {
 };
 
 // eslint-disable-next-line @typescript-eslint/require-await
-const authData = cache(async () => {
+const authData$ = cache(async () => {
   "use server";
+  console.log("reacquiring auth data...");
   const event = getRequestEvent()!;
   const user = event.nativeEvent.context.user;
 
@@ -108,17 +121,19 @@ const authData = cache(async () => {
 }, "auth-data");
 
 export const route = {
-  preload: () => authData(),
+  preload: () => authData$(),
 } satisfies RouteDefinition;
 
 export const AuthInfo: VoidComponent = () => {
-  const session = createAsync(() => authData(), {
+  const session = createAsync(() => authData$(), {
     deferStream: true,
   });
 
   return (
-    <Show when={session()} fallback={<GLoginButton />}>
-      <LogoutButton />
-    </Show>
+    <Suspense>
+      <Show when={session()} fallback={<GLoginButton />}>
+        <LogoutButton />
+      </Show>
+    </Suspense>
   );
 };

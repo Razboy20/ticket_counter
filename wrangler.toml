@@ -7,3 +7,6 @@ compatibility_flags = ["nodejs_compat"]
 binding = "DB" # i.e. available in your Worker on env.DB
 database_name = "ticket_counter"
 database_id = "da763091-4068-4ca7-aa9b-aa897d6e166b"
+
+[vars]
+VITE_PARTY_SOCKET = "ticket-counter-party.razboy20.partykit.dev"

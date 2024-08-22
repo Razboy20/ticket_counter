@@ -1,2 +1,1 @@
-packages/website/node_modules/*
-packages/website/.solid/*
+*.cjs

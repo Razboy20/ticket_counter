@@ -1,0 +1,40 @@
+diff --git a/integrations/drizzle/index.cjs b/integrations/drizzle/index.cjs
+index 580cbecbac99a2ea9fd95259c9b9e2065b9228ab..3ad239b4451ce2cb0ced5d6758876b9d8b1cddbe 100644
+--- a/integrations/drizzle/index.cjs
++++ b/integrations/drizzle/index.cjs
+@@ -6,8 +6,7 @@ Object.defineProperty(exports, "__esModule", {
+ exports.drizzle = drizzle;
+ var _sqliteCore = require("drizzle-orm/sqlite-core");
+ var _session = require("./_session.cjs");
+-function drizzle(db) {
+-  const schema = void 0;
++function drizzle(db, schema = undefined) {
+   const dialect = new _sqliteCore.SQLiteAsyncDialect();
+   const session = new _session.DB0Session(db, dialect, schema);
+   return new _sqliteCore.BaseSQLiteDatabase("async", dialect, session, schema);
+diff --git a/integrations/drizzle/index.d.ts b/integrations/drizzle/index.d.ts
+index e35844752acdbf223b9b4fcce1730f1f85814f50..0ee80aa8109e56f6f48b4cbf81550c6503112b10 100644
+--- a/integrations/drizzle/index.d.ts
++++ b/integrations/drizzle/index.d.ts
+@@ -1,5 +1,5 @@
+ import { BaseSQLiteDatabase } from "drizzle-orm/sqlite-core";
+ import type { Database } from "../../types";
+ type DrizzleDatabase<TSchema extends Record<string, unknown> = Record<string, never>> = BaseSQLiteDatabase<"async", any, TSchema>;
+-export declare function drizzle<TSchema extends Record<string, unknown> = Record<string, never>>(db: Database): DrizzleDatabase<TSchema>;
+-export {};
++export declare function drizzle<TSchema extends Record<string, unknown> = Record<string, never>>(db: Database, schema?: TSchema): DrizzleDatabase<TSchema>;
++export { };
+diff --git a/integrations/drizzle/index.mjs b/integrations/drizzle/index.mjs
+index 8e6306de5dd96ed5644956c92eb2a4be954b8587..3e72144b54fbbceb3d3374e5c1030c7b2c8529bf 100644
+--- a/integrations/drizzle/index.mjs
++++ b/integrations/drizzle/index.mjs
+@@ -3,8 +3,7 @@ import {
+   SQLiteAsyncDialect
+ } from "drizzle-orm/sqlite-core";
+ import { DB0Session } from "./_session.mjs";
+-export function drizzle(db) {
+-  const schema = void 0;
++export function drizzle(db, schema = undefined) {
+   const dialect = new SQLiteAsyncDialect();
+   const session = new DB0Session(db, dialect, schema);
+   return new BaseSQLiteDatabase(

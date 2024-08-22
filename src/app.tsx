@@ -23,7 +23,7 @@ const Root = (prop: RouteSectionProps) => {
           </A> */}
           <AuthInfo />
         </div>
-        {prop.children}
+        <Suspense>{prop.children}</Suspense>
         <Toast.Region>
           <Toast.List class="fixed bottom-0 right-0 z-9999 max-w-full w-100 flex flex-col gap-2 p-4 outline-none" />
         </Toast.Region>

@@ -1,18 +1,38 @@
-import { PrismaD1 } from "@prisma/adapter-d1";
-import { PrismaClient } from "@prisma/client";
 import { createMiddleware } from "@solidjs/start/middleware";
+import Database from "better-sqlite3";
 import { verifyRequestOrigin } from "lucia";
 import { appendHeader, getCookie, getHeader } from "vinxi/http";
-import { createLuciaClient } from "./lib/auth";
+import { schema } from "./db/schema";
+import { createLuciaClient, type DrizzleDatabase } from "./lib/auth";
 import { env } from "./util/cf";
 
 export default createMiddleware({
   onRequest: async (event) => {
     const ev = event.nativeEvent;
 
-    // add Prisma client to locals
-    const adapter = new PrismaD1(env(event).DB);
-    const prisma = (event.locals.db = new PrismaClient({ adapter }));
+    // add Drizzle client to locals
+    // const database = useDatabase();
+    // console.log(schema);
+    // const client = drizzle(database, schema);
+    // const drizzle = (
+    //   (await import(`drizzle-orm/${process.env.NODE_ENV != "production" ? "better-sqlite3" : "d1"}`)) as
+    //   | typeof import("drizzle-orm/better-sqlite3")
+    //   | typeof import("drizzle-orm/d1")
+    // ).drizzle;
+
+    let client;
+
+    if (process.env.NODE_ENV === "production") {
+      const drizzle = (await import("drizzle-orm/d1")).drizzle;
+      client = drizzle(env(event).DB, { schema });
+    } else {
+      const drizzle = (await import("drizzle-orm/better-sqlite3")).drizzle;
+      client = drizzle(new Database("sqlite.db"), { schema });
+    }
+
+    // eslint-disable-next-line
+    // @ts-ignore
+    event.locals.db = client;
 
     // Lucia auth
     if (ev.node.req.method !== "GET") {
@@ -24,7 +44,7 @@ export default createMiddleware({
       }
     }
 
-    const lucia = (event.locals.lucia = createLuciaClient(prisma));
+    const lucia = (event.locals.lucia = createLuciaClient(event.locals.db));
 
     const sessionId = getCookie(ev, lucia.sessionCookieName) ?? null;
     if (!sessionId) {
@@ -41,13 +61,14 @@ export default createMiddleware({
       appendHeader(ev, "Set-Cookie", lucia.createBlankSessionCookie().serialize());
     }
     ev.context.session = session;
+    ev.context.user = user;
   },
 });
 
 // Extend locals type
 declare module "@solidjs/start/server" {
   interface RequestEventLocals {
-    db: PrismaClient;
+    db: DrizzleDatabase;
     lucia: ReturnType<typeof createLuciaClient>;
   }
 }

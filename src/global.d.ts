@@ -14,6 +14,7 @@ export interface CfPagesEnv {
   // Environment variables
   GOOGLE_CLIENT_SECRET: string;
   GOOGLE_CLIENT_ID: string;
+  INTERNAL_SECRET: string;
 
   // Bindings
   DB: D1Database;
@@ -30,4 +31,15 @@ declare module "vinxi/http" {
       context: ExecutionContext;
     };
   }
+}
+declare module "lucia" {
+  interface Register {
+    Lucia: typeof lucia;
+    DatabaseUserAttributes: DatabaseUserAttributes;
+  }
+}
+
+interface DatabaseUserAttributes {
+  name: string;
+  role: "admin" | "user";
 }
