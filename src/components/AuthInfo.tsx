@@ -25,8 +25,9 @@ const logoutAction$ = action(async () => {
 
     // regenerate the fingerprint
     deleteCookie(event.nativeEvent, "session_id");
-    void revalidate("sessionId");
-    void revalidate("authSessionid");
+    // todo: fix single-flight revalidation
+    // void revalidate("sessionId");
+    // void revalidate("authSessionId");
 
     console.log("Session invalidated.");
 

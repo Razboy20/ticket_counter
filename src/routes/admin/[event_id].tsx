@@ -88,9 +88,9 @@ export default function TicketAdminPage() {
           <h2 class="text-xl">Users:</h2>
           <ul>
             <For each={users}>
-              {(user) => (
+              {(user, index) => (
                 <li class="text-xl text-neutral-600 dark:text-neutral-400">
-                  {user.ticket}:{" "}
+                  {index() + 1}:{" "}
                   <Tooltip
                     as="span"
                     placement="right"

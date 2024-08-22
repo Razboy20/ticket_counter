@@ -3,9 +3,9 @@ import { z } from "zod";
 // ---- shared types ----
 export const RoomInfo = z.object({ total: z.number(), verified: z.boolean(), name: z.string().optional() });
 export const UserInfo = z.object({
+  id: z.string(),
   name: z.string(),
   online: z.boolean(),
-  ticket: z.number(),
   checkinTime: z.coerce.date(),
 });
 
